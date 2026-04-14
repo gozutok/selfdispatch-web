@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — Self Dispatch</title>
+    <meta name="description" content="Privacy Policy for Self Dispatch — Operational Flight Plan Briefing Assistant for Airline Pilots.">
+    <meta name="theme-color" content="#000000">
+    <link rel="canonical" href="https://selfdispatch.net/privacy">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --space: #000000;
+            --upper-atmo: #0C1445;
+            --twilight: #1E3A5F;
+            --white-bright: #F8FAFC;
+            --sunset: #FB923C;
+            --sunset-deep: #EA580C;
+            --ice: #7DD3FC;
+            --white-90: rgba(248, 250, 252, 0.9);
+            --white-70: rgba(248, 250, 252, 0.7);
+            --white-50: rgba(248, 250, 252, 0.5);
+            --white-30: rgba(248, 250, 252, 0.3);
+            --white-10: rgba(248, 250, 252, 0.1);
+            --white-05: rgba(248, 250, 252, 0.05);
+            --green: #22C55E;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--space);
+            background-image: linear-gradient(
+                180deg,
+                var(--space) 0%,
+                #050A1A 10%,
+                var(--upper-atmo) 30%,
+                var(--twilight) 55%,
+                #2A4A6F 70%,
+                #3D2B1A 88%,
+                #1A0F05 100%
+            );
+            background-attachment: fixed;
+            color: var(--white-90);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- STARS --- */
+        .stars-field {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(1.2px 1.2px at 12% 8%, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1.4px 1.4px at 67% 5%, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 35% 12%, rgba(255,255,255,0.5), transparent),
+                radial-gradient(1.3px 1.3px at 82% 18%, rgba(255,255,255,0.65), transparent),
+                radial-gradient(1px 1px at 48% 3%, rgba(255,255,255,0.55), transparent),
+                radial-gradient(1.5px 1.5px at 91% 11%, rgba(255,255,255,0.75), transparent),
+                radial-gradient(1px 1px at 23% 22%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(1.1px 1.1px at 56% 16%, rgba(255,255,255,0.5), transparent),
+                radial-gradient(1px 1px at 5% 28%, rgba(255,255,255,0.35), transparent),
+                radial-gradient(1px 1px at 74% 25%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(0.8px 0.8px at 42% 31%, rgba(255,255,255,0.3), transparent),
+                radial-gradient(1px 1px at 18% 35%, rgba(255,255,255,0.25), transparent),
+                radial-gradient(0.8px 0.8px at 88% 33%, rgba(255,255,255,0.35), transparent),
+                radial-gradient(1px 1px at 61% 29%, rgba(255,255,255,0.3), transparent),
+                radial-gradient(0.8px 0.8px at 15% 44%, rgba(255,255,255,0.15), transparent),
+                radial-gradient(0.8px 0.8px at 52% 47%, rgba(255,255,255,0.12), transparent),
+                radial-gradient(0.7px 0.7px at 70% 42%, rgba(255,255,255,0.15), transparent);
+            -webkit-mask-image: linear-gradient(180deg, white 0%, white 45%, transparent 70%);
+            mask-image: linear-gradient(180deg, white 0%, white 45%, transparent 70%);
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.15; }
+            50% { opacity: 0.9; }
+        }
+
+        @keyframes twinkle-soft {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.6; }
+        }
+
+        .twinkle-star {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            background: white;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .twinkle-star--1 { top: 6%; left: 15%; width: 2.5px; height: 2.5px; animation: twinkle 4s ease-in-out infinite; }
+        .twinkle-star--2 { top: 11%; left: 72%; animation: twinkle-soft 5.5s ease-in-out infinite 1.2s; }
+        .twinkle-star--3 { top: 3%; left: 45%; width: 2.2px; height: 2.2px; animation: twinkle 6s ease-in-out infinite 2.8s; }
+        .twinkle-star--4 { top: 19%; left: 88%; animation: twinkle-soft 4.5s ease-in-out infinite 0.5s; }
+        .twinkle-star--5 { top: 25%; left: 30%; width: 1.8px; height: 1.8px; animation: twinkle 7s ease-in-out infinite 3.5s; }
+
+        /* --- HEADER --- */
+        .page-header {
+            position: relative;
+            z-index: 1;
+            padding: 48px 24px 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--ice);
+            text-decoration: none;
+            transition: color 200ms ease;
+            margin-bottom: 40px;
+        }
+
+        .back-link:hover {
+            color: var(--white-bright);
+        }
+
+        .back-link svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .page-header h1 {
+            font-size: clamp(30px, 5vw, 48px);
+            font-weight: 800;
+            color: var(--white-bright);
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .page-header .effective-date {
+            font-size: 15px;
+            color: var(--white-50);
+        }
+
+        /* --- CONTENT --- */
+        .privacy-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px 100px;
+        }
+
+        .privacy-content .intro {
+            font-size: 17px;
+            color: var(--white-70);
+            line-height: 1.75;
+            margin-bottom: 48px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid var(--white-10);
+        }
+
+        .privacy-content h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--white-bright);
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            margin-top: 48px;
+        }
+
+        .privacy-content h2:first-of-type {
+            margin-top: 0;
+        }
+
+        .privacy-content p {
+            font-size: 15px;
+            color: var(--white-70);
+            line-height: 1.75;
+            margin-bottom: 16px;
+        }
+
+        .privacy-content ul {
+            list-style: none;
+            margin-bottom: 20px;
+            padding-left: 0;
+        }
+
+        .privacy-content ul li {
+            position: relative;
+            padding-left: 24px;
+            font-size: 15px;
+            color: var(--white-70);
+            line-height: 1.75;
+            margin-bottom: 8px;
+        }
+
+        .privacy-content ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 11px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--ice);
+            opacity: 0.6;
+        }
+
+        .privacy-content strong {
+            color: var(--white-90);
+            font-weight: 600;
+        }
+
+        .privacy-content a {
+            color: var(--ice);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(125, 211, 252, 0.3);
+            transition: border-color 200ms ease, color 200ms ease;
+        }
+
+        .privacy-content a:hover {
+            color: var(--white-bright);
+            border-color: var(--white-bright);
+        }
+
+        .privacy-content a:focus-visible {
+            outline: 2px solid var(--ice);
+            outline-offset: 2px;
+        }
+
+        .network-item {
+            background: var(--white-05);
+            border: 1px solid var(--white-10);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 12px;
+        }
+
+        .network-item strong {
+            display: block;
+            color: var(--sunset);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .network-item p {
+            margin-bottom: 0;
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid var(--white-10);
+            padding: 32px 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            font-size: 14px;
+            color: var(--white-50);
+            text-decoration: none;
+            transition: color 200ms ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--ice);
+        }
+
+        .footer-copy {
+            font-size: 13px;
+            color: var(--white-50);
+        }
+
+        @media (min-width: 768px) {
+            .page-header {
+                padding: 64px 40px 48px;
+            }
+            .privacy-content {
+                padding: 0 40px 120px;
+            }
+            .footer {
+                padding: 32px 40px;
+            }
+            .footer-inner {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid var(--ice);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STARS -->
+    <div class="stars-field" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--1" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--2" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--3" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--4" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--5" aria-hidden="true"></div>
+
+    <!-- HEADER -->
+    <header class="page-header">
+        <a href="/variant-d-v2.html" class="back-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+            Back to Self Dispatch
+        </a>
+        <h1>Privacy Policy</h1>
+        <p class="effective-date">Effective date: March 20, 2026</p>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="privacy-content">
+        <p class="intro">This Privacy Policy describes how Self Dispatch ("the App," "we," "us," or "our") handles your information. We believe in being straightforward: we do not collect your personal data.</p>
+
+        <h2>What We Do Not Collect</h2>
+        <p>We do not collect, store, or transmit any personal information. This includes but is not limited to:</p>
+        <ul>
+            <li>Your name, email address, or contact details</li>
+            <li>Your location</li>
+            <li>Device identifiers or IP addresses</li>
+            <li>Usage data, analytics, or telemetry</li>
+            <li>Advertising or tracking identifiers</li>
+            <li>Crash reports or diagnostics</li>
+        </ul>
+        <p>We do not require you to create an account, sign in, or provide any personal information to use the App.</p>
+
+        <h2>How Your Data Is Stored</h2>
+        <p>All documents you import and all data the App generates from those documents are stored <strong>locally on your device only</strong>. We do not operate any servers that store your data. There is no cloud synchronization, no remote backup, and no way for us to access the data on your device.</p>
+        <p>Your app preferences (such as display theme) are also stored locally on your device.</p>
+
+        <h2>Network Requests</h2>
+        <p>The App connects to the internet in four limited situations. In all cases, only non-personal operational identifiers are sent:</p>
+
+        <div class="network-item">
+            <strong>Weather data</strong>
+            <p>The App sends standard airport identifier codes (ICAO codes, such as "KJFK") to a public aviation weather service to retrieve current weather reports. No personal information is included in these requests.</p>
+        </div>
+
+        <div class="network-item">
+            <strong>Airport clearance data</strong>
+            <p>For departures from certain airports, the App may send a flight number to the airport's public information service to retrieve operational clearance data. No personal information is included in these requests.</p>
+        </div>
+
+        <div class="network-item">
+            <strong>ATIS data</strong>
+            <p>When you request it, the App sends standard airport identifier codes (ICAO codes) to a public aviation data service to retrieve current ATIS (Automatic Terminal Information Service) reports. No personal information is included in these requests.</p>
+        </div>
+
+        <div class="network-item">
+            <strong>Route information</strong>
+            <p>For departures from certain airports, the App may send a flight number and airport codes to a public flight information service to retrieve expected route data. No personal information is included in these requests.</p>
+        </div>
+
+        <p>No other network requests are made. We do not send your documents, flight data, or any personal information to any server.</p>
+
+        <h2>Third-Party Services</h2>
+        <p>The App does not include any third-party advertising, analytics, tracking, or social media frameworks. We do not share your information with any third party for any purpose, including marketing or advertising.</p>
+
+        <h2>Do Not Sell</h2>
+        <p>We do not sell, rent, trade, or otherwise transfer your personal information to anyone. Since we do not collect personal information, there is nothing to sell.</p>
+
+        <h2>The App Includes a Public Airport Database</h2>
+        <p>The App contains a read-only database of publicly available airport information (such as coordinates, runway data, and airport names). This database does not contain any personal data.</p>
+
+        <h2>Children's Privacy</h2>
+        <p>The App is not directed to children under the age of 13 (or 16 in the European Economic Area). We do not knowingly collect any information from children.</p>
+
+        <h2>Your Rights</h2>
+        <p>Under applicable data protection laws (including GDPR, CCPA, and similar regulations), you may have rights regarding your personal data, such as the right to access, correct, delete, or port your data. Since we do not collect any personal data, there is no personal data for us to provide, correct, delete, or transfer.</p>
+        <p>If you have any questions about your privacy rights in connection with the App, please contact us using the information below.</p>
+
+        <h2>Data Deletion</h2>
+        <p>You can delete all App data at any time by removing the App from your device. Since no data is stored on our servers, deletion from your device is immediate and complete. You can also delete individual items from within the App.</p>
+
+        <h2>Changes to This Policy</h2>
+        <p>We may update this Privacy Policy from time to time. When we do, we will revise the "Effective date" at the top of this page. We encourage you to review this page periodically. Your continued use of the App after any changes constitutes your acceptance of the updated policy.</p>
+
+        <h2>Contact Us</h2>
+        <p>If you have any questions about this Privacy Policy, please contact us at:</p>
+        <p><a href="mailto:hello@selfdispatch.net">hello@selfdispatch.net</a></p>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <span class="footer-copy">&copy; 2025 Self Dispatch</span>
+            <div class="footer-links">
+                <a href="/variant-d-v2.html">Home</a>
+                <a href="mailto:hello@selfdispatch.net">Support</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
