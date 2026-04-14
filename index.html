@@ -1,1 +1,1043 @@
-Hello
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self Dispatch — Operational Flight Plan Briefing Assistant for Airline Pilots</title>
+    <meta name="description" content="Transform Operational Flight Plan PDFs into interactive briefings. AI-powered NOTAM classification, live weather, crosswind calculator — 100% on-device.">
+    <meta name="theme-color" content="#000000">
+    <link rel="canonical" href="https://selfdispatch.net/">
+    <meta property="og:title" content="Self Dispatch — Operational Flight Plan Briefing Assistant">
+    <meta property="og:description" content="Transform OFP PDFs into interactive briefings. AI-powered, privacy-first, built for airline pilots.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://selfdispatch.net/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --space: #000000;
+            --upper-atmo: #0C1445;
+            --twilight: #1E3A5F;
+            --white-bright: #F8FAFC;
+            --sunset: #FB923C;
+            --sunset-deep: #EA580C;
+            --ice: #7DD3FC;
+            --white-90: rgba(248, 250, 252, 0.9);
+            --white-70: rgba(248, 250, 252, 0.7);
+            --white-50: rgba(248, 250, 252, 0.5);
+            --white-30: rgba(248, 250, 252, 0.3);
+            --white-10: rgba(248, 250, 252, 0.1);
+            --white-05: rgba(248, 250, 252, 0.05);
+            --green: #22C55E;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--space);
+            background-image: linear-gradient(
+                180deg,
+                var(--space) 0%,
+                #050A1A 10%,
+                var(--upper-atmo) 30%,
+                var(--twilight) 55%,
+                #2A4A6F 70%,
+                #3D2B1A 88%,
+                #1A0F05 100%
+            );
+            background-attachment: fixed;
+            color: var(--white-90);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- HERO --- */
+        .hero {
+            position: relative;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 64px 24px;
+            overflow: hidden;
+        }
+
+        .stars-field {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                /* Bright stars */
+                radial-gradient(1.2px 1.2px at 12% 8%, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1.4px 1.4px at 67% 5%, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 35% 12%, rgba(255,255,255,0.5), transparent),
+                radial-gradient(1.3px 1.3px at 82% 18%, rgba(255,255,255,0.65), transparent),
+                radial-gradient(1px 1px at 48% 3%, rgba(255,255,255,0.55), transparent),
+                radial-gradient(1.5px 1.5px at 91% 11%, rgba(255,255,255,0.75), transparent),
+                radial-gradient(1px 1px at 23% 22%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(1.1px 1.1px at 56% 16%, rgba(255,255,255,0.5), transparent),
+                /* Medium stars */
+                radial-gradient(1px 1px at 5% 28%, rgba(255,255,255,0.35), transparent),
+                radial-gradient(1px 1px at 74% 25%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(0.8px 0.8px at 42% 31%, rgba(255,255,255,0.3), transparent),
+                radial-gradient(1px 1px at 18% 35%, rgba(255,255,255,0.25), transparent),
+                radial-gradient(0.8px 0.8px at 88% 33%, rgba(255,255,255,0.35), transparent),
+                radial-gradient(1px 1px at 61% 29%, rgba(255,255,255,0.3), transparent),
+                radial-gradient(0.8px 0.8px at 33% 40%, rgba(255,255,255,0.2), transparent),
+                radial-gradient(1px 1px at 79% 38%, rgba(255,255,255,0.25), transparent),
+                /* Dim stars lower */
+                radial-gradient(0.8px 0.8px at 15% 44%, rgba(255,255,255,0.15), transparent),
+                radial-gradient(0.8px 0.8px at 52% 47%, rgba(255,255,255,0.12), transparent),
+                radial-gradient(0.7px 0.7px at 70% 42%, rgba(255,255,255,0.15), transparent),
+                radial-gradient(0.8px 0.8px at 38% 50%, rgba(255,255,255,0.1), transparent),
+                radial-gradient(0.7px 0.7px at 85% 46%, rgba(255,255,255,0.12), transparent),
+                radial-gradient(0.7px 0.7px at 8% 52%, rgba(255,255,255,0.08), transparent),
+                radial-gradient(0.8px 0.8px at 27% 55%, rgba(255,255,255,0.06), transparent);
+            /* Fade out stars toward the warm horizon */
+            -webkit-mask-image: linear-gradient(180deg, white 0%, white 45%, transparent 70%);
+            mask-image: linear-gradient(180deg, white 0%, white 45%, transparent 70%);
+        }
+
+        .twinkle-star {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            background: white;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.15; }
+            50% { opacity: 0.9; }
+        }
+
+        @keyframes twinkle-soft {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.6; }
+        }
+
+        .twinkle-star--1 { top: 6%; left: 15%; width: 2.5px; height: 2.5px; animation: twinkle 4s ease-in-out infinite; }
+        .twinkle-star--2 { top: 11%; left: 72%; animation: twinkle-soft 5.5s ease-in-out infinite 1.2s; }
+        .twinkle-star--3 { top: 3%; left: 45%; width: 2.2px; height: 2.2px; animation: twinkle 6s ease-in-out infinite 2.8s; }
+        .twinkle-star--4 { top: 19%; left: 88%; animation: twinkle-soft 4.5s ease-in-out infinite 0.5s; }
+        .twinkle-star--5 { top: 25%; left: 30%; width: 1.8px; height: 1.8px; animation: twinkle 7s ease-in-out infinite 3.5s; }
+        .twinkle-star--6 { top: 14%; left: 55%; animation: twinkle-soft 5s ease-in-out infinite 1.8s; }
+        .twinkle-star--7 { top: 8%; left: 93%; width: 2.2px; height: 2.2px; animation: twinkle 5s ease-in-out infinite 4.2s; }
+        .twinkle-star--8 { top: 32%; left: 10%; animation: twinkle-soft 6.5s ease-in-out infinite 0.8s; }
+        .twinkle-star--9 { top: 22%; left: 62%; width: 2px; height: 2px; animation: twinkle 4.8s ease-in-out infinite 2.1s; }
+        .twinkle-star--10 { top: 37%; left: 78%; animation: twinkle-soft 5.8s ease-in-out infinite 3.0s; }
+
+        .hero-content {
+            position: relative;
+            max-width: 900px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 36px;
+        }
+
+        .hero h1 {
+            font-size: clamp(34px, 7vw, 64px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            color: var(--white-bright);
+            max-width: 780px;
+            text-shadow: 0 0 60px rgba(251, 146, 60, 0.15), 0 0 120px rgba(125, 211, 252, 0.08);
+        }
+
+        .hero h1 .accent {
+            background: linear-gradient(135deg, var(--sunset) 0%, #F472B6 50%, var(--ice) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: clamp(16px, 2.5vw, 20px);
+            color: var(--white-70);
+            max-width: 620px;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .app-store-badge {
+            display: inline-block;
+            transition: opacity 200ms ease, transform 100ms ease;
+            cursor: pointer;
+        }
+
+        .app-store-badge:hover {
+            opacity: 0.85;
+            transform: scale(1.02);
+        }
+
+        .app-store-badge:focus-visible {
+            outline: 2px solid var(--sunset);
+            outline-offset: 2px;
+            border-radius: 8px;
+        }
+
+        .app-store-badge img {
+            height: 52px;
+            width: auto;
+        }
+
+        .hero-mockup {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            margin-top: 24px;
+            perspective: 800px;
+        }
+
+        .hero-mockup-inner {
+            transform: rotateY(-5deg) rotateX(3deg);
+            transition: transform 400ms ease;
+        }
+
+        .hero-mockup:hover .hero-mockup-inner {
+            transform: rotateY(0deg) rotateX(0deg);
+        }
+
+        .hero-mockup-glow {
+            position: absolute;
+            bottom: -30px;
+            left: 10%;
+            right: 10%;
+            height: 60px;
+            background: radial-gradient(ellipse, rgba(248, 250, 252, 0.12), transparent 70%);
+            filter: blur(20px);
+            pointer-events: none;
+        }
+
+        .hero-mockup img {
+            position: relative;
+            width: 100%;
+            height: auto;
+            border-radius: 24px;
+            border: 1.5px solid var(--white-10);
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.6),
+                0 0 40px rgba(248, 250, 252, 0.05);
+        }
+
+        /* --- FEATURES --- */
+        .features {
+            padding: 80px 24px;
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--sunset);
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: clamp(24px, 4vw, 40px);
+            font-weight: 700;
+            text-align: center;
+            color: var(--white-bright);
+            letter-spacing: -0.03em;
+            margin-bottom: 52px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--white-10);
+            border-radius: 16px;
+            padding: 0;
+            overflow: hidden;
+            transition: border-color 250ms ease, transform 200ms ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--white-30);
+            transform: translateY(-2px);
+        }
+
+        .feature-stripe {
+            height: 4px;
+            width: 100%;
+        }
+
+        .feature-stripe--ice { background: var(--ice); }
+        .feature-stripe--sunset { background: var(--sunset); }
+
+        .feature-card-body {
+            padding: 28px 24px;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+
+        .feature-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .feature-icon--ice { background: rgba(125, 211, 252, 0.12); color: var(--ice); }
+        .feature-icon--sunset { background: rgba(251, 146, 60, 0.12); color: var(--sunset); }
+        .feature-icon--green { background: rgba(34, 197, 94, 0.12); color: var(--green); }
+        .feature-icon--purple { background: rgba(168, 85, 247, 0.12); color: #A855F7; }
+        .feature-icon--cyan { background: rgba(6, 182, 212, 0.12); color: #06B6D4; }
+        .feature-icon--rose { background: rgba(244, 63, 94, 0.12); color: #F43F5E; }
+
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--white-bright);
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--white-70);
+            line-height: 1.65;
+        }
+
+        /* --- SCREENSHOTS CAROUSEL --- */
+        .screenshots {
+            padding: 80px 24px;
+            overflow: hidden;
+        }
+
+        .carousel-wrapper {
+            position: relative;
+            padding: 40px 0 20px;
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .carousel-wrapper.is-dragging {
+            cursor: grabbing;
+        }
+
+        .carousel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            perspective: 1200px;
+            position: relative;
+            min-height: 500px;
+        }
+
+        .carousel-item {
+            position: absolute;
+            transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1), opacity 500ms cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, opacity;
+        }
+
+        .carousel-item img {
+            border-radius: 20px;
+            border: 1.5px solid var(--white-10);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            display: block;
+            width: 180px;
+            height: auto;
+            pointer-events: none;
+        }
+
+        .carousel-item[data-pos="-2"] {
+            transform: translateX(-280px) rotateY(25deg) scale(0.65);
+            opacity: 0.35;
+            z-index: 1;
+        }
+
+        .carousel-item[data-pos="-1"] {
+            transform: translateX(-160px) rotateY(15deg) scale(0.82);
+            opacity: 0.7;
+            z-index: 2;
+        }
+
+        .carousel-item[data-pos="0"] {
+            transform: translateX(0) rotateY(0deg) scale(1);
+            opacity: 1;
+            z-index: 3;
+        }
+
+        .carousel-item[data-pos="1"] {
+            transform: translateX(160px) rotateY(-15deg) scale(0.82);
+            opacity: 0.7;
+            z-index: 2;
+        }
+
+        .carousel-item[data-pos="2"] {
+            transform: translateX(280px) rotateY(-25deg) scale(0.65);
+            opacity: 0.35;
+            z-index: 1;
+        }
+
+        .carousel-item[data-pos="0"] img {
+            width: 240px;
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.6),
+                0 0 30px rgba(125, 211, 252, 0.08);
+        }
+
+        .carousel-label {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--white-50);
+            opacity: 0;
+            transition: opacity 500ms ease;
+        }
+
+        .carousel-item[data-pos="0"] .carousel-label {
+            opacity: 1;
+            color: var(--ice);
+            font-size: 13px;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 32px 0 0;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid var(--ice);
+            background: transparent;
+            cursor: pointer;
+            transition: background 250ms ease, transform 250ms ease;
+            padding: 0;
+        }
+
+        .carousel-dot:hover {
+            background: rgba(125, 211, 252, 0.3);
+        }
+
+        .carousel-dot.is-active {
+            background: var(--ice);
+            transform: scale(1.2);
+        }
+
+        .carousel-dot:focus-visible {
+            outline: 2px solid var(--ice);
+            outline-offset: 3px;
+        }
+
+        /* Hide far items on very small screens */
+        @media (max-width: 639px) {
+            .carousel-item[data-pos="-2"],
+            .carousel-item[data-pos="2"] {
+                display: none;
+            }
+            .carousel-item[data-pos="-1"] {
+                transform: translateX(-120px) rotateY(15deg) scale(0.82);
+            }
+            .carousel-item[data-pos="1"] {
+                transform: translateX(120px) rotateY(-15deg) scale(0.82);
+            }
+            .carousel { min-height: 420px; }
+            .carousel-item[data-pos="0"] img { width: 200px; }
+        }
+
+        /* --- PRIVACY --- */
+        .privacy-section {
+            padding: 64px 24px;
+            position: relative;
+        }
+
+        .privacy-band {
+            max-width: 960px;
+            margin: 0 auto;
+            background: linear-gradient(90deg, transparent, rgba(248, 250, 252, 0.04) 20%, rgba(248, 250, 252, 0.06) 50%, rgba(248, 250, 252, 0.04) 80%, transparent);
+            border-top: 1px solid var(--white-10);
+            border-bottom: 1px solid var(--white-10);
+            padding: 48px 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 20px;
+        }
+
+        .privacy-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .privacy-shield {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green);
+        }
+
+        .privacy-shield svg {
+            width: 36px;
+            height: 36px;
+        }
+
+        .privacy-header h2 {
+            font-size: clamp(22px, 3.5vw, 30px);
+            font-weight: 700;
+            color: var(--white-bright);
+            letter-spacing: -0.02em;
+        }
+
+        .privacy-band > p {
+            font-size: 16px;
+            color: var(--white-70);
+            max-width: 540px;
+            line-height: 1.6;
+        }
+
+        .privacy-badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .privacy-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: var(--white-05);
+            border: 1px solid var(--white-10);
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--white-70);
+        }
+
+        .privacy-badge svg {
+            width: 16px;
+            height: 16px;
+            color: var(--green);
+        }
+
+        /* --- CTA --- */
+        .cta-section {
+            padding: 80px 24px 100px;
+            text-align: center;
+            position: relative;
+        }
+
+        .cta-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(251, 146, 60, 0.06) 30%, rgba(251, 146, 60, 0.12) 60%, rgba(234, 88, 12, 0.08) 100%);
+            pointer-events: none;
+        }
+
+        .cta-content {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-section h2 {
+            font-size: clamp(26px, 4.5vw, 42px);
+            font-weight: 800;
+            color: var(--white-bright);
+            margin-bottom: 14px;
+            letter-spacing: -0.03em;
+        }
+
+        .cta-section p {
+            font-size: 17px;
+            color: var(--white-70);
+            margin-bottom: 32px;
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            border-top: 1px solid var(--white-10);
+            padding: 32px 24px;
+            max-width: 1120px;
+            margin: 0 auto;
+            background: transparent;
+        }
+
+        .footer-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            font-size: 14px;
+            color: var(--white-50);
+            text-decoration: none;
+            transition: color 200ms ease;
+            cursor: pointer;
+        }
+
+        .footer-links a:hover {
+            color: var(--ice);
+        }
+
+        .footer-links a:focus-visible {
+            outline: 2px solid var(--ice);
+            outline-offset: 2px;
+        }
+
+        .footer-copy {
+            font-size: 13px;
+            color: var(--white-50);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (min-width: 375px) {
+            .carousel-item img {
+                width: 160px;
+            }
+            .carousel-item[data-pos="0"] img {
+                width: 220px;
+            }
+        }
+
+        @media (min-width: 640px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .carousel-item img { width: 200px; }
+            .carousel-item[data-pos="0"] img { width: 280px; }
+            .carousel-item[data-pos="-1"] { transform: translateX(-180px) rotateY(15deg) scale(0.82); }
+            .carousel-item[data-pos="1"] { transform: translateX(180px) rotateY(-15deg) scale(0.82); }
+            .carousel-item[data-pos="-2"] { transform: translateX(-320px) rotateY(25deg) scale(0.65); }
+            .carousel-item[data-pos="2"] { transform: translateX(320px) rotateY(-25deg) scale(0.65); }
+            .carousel { min-height: 540px; }
+        }
+
+        @media (min-width: 768px) {
+            .hero-mockup {
+                max-width: 320px;
+            }
+
+            .carousel-item img { width: 200px; }
+            .carousel-item[data-pos="0"] img { width: 280px; }
+
+            .footer-inner {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .privacy-band {
+                padding: 48px 48px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .features {
+                padding: 100px 40px;
+            }
+
+            .carousel-item img { width: 220px; }
+            .carousel-item[data-pos="0"] img { width: 300px; }
+            .carousel-item[data-pos="-1"] { transform: translateX(-200px) rotateY(15deg) scale(0.82); }
+            .carousel-item[data-pos="1"] { transform: translateX(200px) rotateY(-15deg) scale(0.82); }
+            .carousel-item[data-pos="-2"] { transform: translateX(-360px) rotateY(25deg) scale(0.65); }
+            .carousel-item[data-pos="2"] { transform: translateX(360px) rotateY(-25deg) scale(0.65); }
+            .carousel { min-height: 580px; }
+
+            .hero h1 {
+                font-size: 64px;
+            }
+        }
+
+        /* Focus visible global */
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid var(--ice);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STARS -->
+    <div class="stars-field" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--1" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--2" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--3" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--4" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--5" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--6" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--7" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--8" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--9" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--10" aria-hidden="true"></div>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Dispatch Briefings, <span class="accent">Reimagined</span></h1>
+            <p class="hero-sub">Transform your Operational Flight Plans into interactive briefings with on-device AI for NOTAM classification, suitibility-time analysis, and flight-critical tools. And, even live ATIS and expected clearance — plus a revolutionary approach to MEL visibility. No cloud. No data shared. Ever.</p>
+            <div class="hero-actions">
+                <a href="https://apps.apple.com" class="app-store-badge" aria-label="Download Self Dispatch on the App Store">
+                    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" height="52" width="156" loading="eager">
+                </a>
+            </div>
+            <div class="hero-mockup">
+                <div class="hero-mockup-inner">
+                    <img src="img/dashboard-e.jpg" alt="Self Dispatch Dashboard showing flight route with fuel data, route, and ATIS information" width="390" height="844" loading="eager">
+                </div>
+                <div class="hero-mockup-glow" aria-hidden="true"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features" id="features">
+        <div class="section-label">Capabilities</div>
+        <h2 class="section-title">Everything you need for a thorough briefing</h2>
+        <div class="features-grid">
+
+            <div class="feature-card">
+                <div class="feature-stripe feature-stripe--ice"></div>
+                <div class="feature-card-body">
+                    <div class="feature-icon feature-icon--ice">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    </div>
+                    <h3>Instant Operational Flight Plan Parsing</h3>
+                    <p>Import your OFP PDF and get a structured, interactive briefing — fuel, routing, alternates, and performance data in one tap.</p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-stripe feature-stripe--sunset"></div>
+                <div class="feature-card-body">
+                    <div class="feature-icon feature-icon--sunset">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <h3>AI NOTAM Classification</h3>
+                    <p>On-device artificial intelligence classifies NOTAMs into 36 categories — runway closures, navaids, airspace, and more — so you see what matters first.</p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-stripe feature-stripe--ice"></div>
+                <div class="feature-card-body">
+                    <div class="feature-icon feature-icon--cyan">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 15a4 4 0 0 0 4 4h10a3 3 0 0 0 .3-5.97A5 5 0 0 0 7.2 9.17 5.5 5.5 0 0 0 3 15z"/></svg>
+                    </div>
+                    <h3>Live Weather Data</h3>
+                    <p>Real-time METAR, TAF, ATIS, and CDM clearance wherever available. SIGMET charts with automatic annotation of your route.</p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-stripe feature-stripe--sunset"></div>
+                <div class="feature-card-body">
+                    <div class="feature-icon feature-icon--green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    </div>
+                    <h3>Flight Tools</h3>
+                    <p>Auto crosswind calculator for runway suitability, fully automatic NAT track calculations, ETOPS critical points — all computed from your OFP data.</p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-stripe feature-stripe--ice"></div>
+                <div class="feature-card-body">
+                    <div class="feature-icon feature-icon--purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </div>
+                    <h3>MEL, MMEL &amp; CDL</h3>
+                    <p>Directly see your operational and maintenance actions with just a click. Quick access to MEL, MMEL, and CDL items — no more scrolling through pages.</p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-stripe feature-stripe--sunset"></div>
+                <div class="feature-card-body">
+                    <div class="feature-icon feature-icon--rose">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="10" y1="3" x2="10" y2="21"/></svg>
+                    </div>
+                    <h3>No More DOW/DOI Tables</h3>
+                    <p>DOW/DOI lookup for all available aircraft. Quick reference for weight and balance without digging through tables.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SCREENSHOTS -->
+    <section class="screenshots" id="screenshots">
+        <div class="section-label">In Action</div>
+        <h2 class="section-title">See it in flight</h2>
+        <div class="carousel-wrapper" role="region" aria-label="App screenshots" aria-roledescription="carousel">
+            <div class="carousel" id="carousel">
+                <div class="carousel-item" data-pos="-2" data-index="0">
+                    <img src="img/dashboard-e.jpg" alt="Dashboard view showing flight overview with route, ATIS, and departure info" width="390" height="844" loading="lazy">
+                    <div class="carousel-label">Dashboard</div>
+                </div>
+                <div class="carousel-item" data-pos="-1" data-index="1">
+                    <img src="img/nat-fuel-e.jpg" alt="NAT crossing details with oceanic FIRs, track data, and fuel breakdown" width="390" height="844" loading="lazy">
+                    <div class="carousel-label">NAT Tracks &amp; Fuel</div>
+                </div>
+                <div class="carousel-item" data-pos="0" data-index="2">
+                    <img src="img/weights-e.jpg" alt="Detailed fuel figures and weight data including RAMP, MARGIN, and MIN DIV values" width="390" height="844" loading="lazy">
+                    <div class="carousel-label">Weights &amp; Balance</div>
+                </div>
+                <div class="carousel-item" data-pos="1" data-index="3">
+                    <img src="img/weather-e.jpg" alt="Weather overview with ETOPS aerodrome status showing OK, Marginal, and Below Min counts" width="390" height="844" loading="lazy">
+                    <div class="carousel-label">Weather &amp; ETOPS</div>
+                </div>
+                <div class="carousel-item" data-pos="2" data-index="4">
+                    <img src="img/notams-e.jpg" alt="NOTAM classification view with color-coded categories per airport" width="390" height="844" loading="lazy">
+                    <div class="carousel-label">NOTAM Classification</div>
+                </div>
+            </div>
+            <div class="carousel-dots" role="tablist" aria-label="Screenshot navigation">
+                <button class="carousel-dot" data-goto="0" role="tab" aria-label="Dashboard" aria-selected="false"></button>
+                <button class="carousel-dot" data-goto="1" role="tab" aria-label="NAT Tracks and Fuel" aria-selected="false"></button>
+                <button class="carousel-dot is-active" data-goto="2" role="tab" aria-label="Weights and Balance" aria-selected="true"></button>
+                <button class="carousel-dot" data-goto="3" role="tab" aria-label="Weather and ETOPS" aria-selected="false"></button>
+                <button class="carousel-dot" data-goto="4" role="tab" aria-label="NOTAM Classification" aria-selected="false"></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRIVACY -->
+    <section class="privacy-section" id="privacy">
+        <div class="privacy-band">
+            <div class="privacy-header">
+                <div class="privacy-shield" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <h2>Privacy by Design</h2>
+            </div>
+            <p>Your operational data stays on your device. No cloud sync, no tracking, no analytics, no ads. Period.</p>
+            <div class="privacy-badges">
+                <span class="privacy-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                    No cloud sync
+                </span>
+                <span class="privacy-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                    No tracking
+                </span>
+                <span class="privacy-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                    No data collection
+                </span>
+                <span class="privacy-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                    No ads
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="cta-bg" aria-hidden="true"></div>
+        <div class="cta-content">
+            <h2>Ready to streamline your briefing?</h2>
+            <p>Available on iPhone and iPad. Supports dark mode.</p>
+            <a href="https://apps.apple.com" class="app-store-badge" aria-label="Download Self Dispatch on the App Store">
+                <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" height="52" width="156" loading="lazy">
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <span class="footer-copy">&copy; 2026 Self Dispatch</span>
+            <div class="footer-links">
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="mailto:ofpbriefing@gozutok.com">Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    (function() {
+        var items = document.querySelectorAll('.carousel-item');
+        var dots = document.querySelectorAll('.carousel-dot');
+        var wrapper = document.querySelector('.carousel-wrapper');
+        var count = items.length;
+        var current = 2;
+        var autoInterval = null;
+        var dragStartX = 0;
+        var isDragging = false;
+        var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function goTo(index) {
+            current = ((index % count) + count) % count;
+            items.forEach(function(item) {
+                var i = parseInt(item.getAttribute('data-index'));
+                var pos = i - current;
+                if (pos > 2) pos -= count;
+                if (pos < -2) pos += count;
+                if (pos < -2 || pos > 2) {
+                    item.style.opacity = '0';
+                    item.style.pointerEvents = 'none';
+                    item.setAttribute('data-pos', pos > 0 ? '2' : '-2');
+                } else {
+                    item.style.opacity = '';
+                    item.style.pointerEvents = '';
+                    item.setAttribute('data-pos', String(pos));
+                }
+            });
+            dots.forEach(function(dot, di) {
+                var isActive = di === current;
+                dot.classList.toggle('is-active', isActive);
+                dot.setAttribute('aria-selected', String(isActive));
+            });
+        }
+
+        function next() { goTo(current + 1); }
+        function prev() { goTo(current - 1); }
+
+        function startAuto() {
+            stopAuto();
+            if (!reducedMotion) {
+                autoInterval = setInterval(next, 3500);
+            }
+        }
+
+        function stopAuto() {
+            if (autoInterval) { clearInterval(autoInterval); autoInterval = null; }
+        }
+
+        // Dot clicks
+        dots.forEach(function(dot) {
+            dot.addEventListener('click', function() {
+                goTo(parseInt(dot.getAttribute('data-goto')));
+                stopAuto();
+                startAuto();
+            });
+        });
+
+        // Click on side items to navigate
+        items.forEach(function(item) {
+            item.addEventListener('click', function() {
+                var pos = parseInt(item.getAttribute('data-pos'));
+                if (pos !== 0) {
+                    goTo(current + pos);
+                    stopAuto();
+                    startAuto();
+                }
+            });
+        });
+
+        // Drag / swipe support
+        function onStart(x) {
+            isDragging = true;
+            dragStartX = x;
+            wrapper.classList.add('is-dragging');
+            stopAuto();
+        }
+
+        function onEnd(x) {
+            if (!isDragging) return;
+            isDragging = false;
+            wrapper.classList.remove('is-dragging');
+            var diff = x - dragStartX;
+            if (Math.abs(diff) > 40) {
+                if (diff > 0) prev(); else next();
+            }
+            startAuto();
+        }
+
+        wrapper.addEventListener('mousedown', function(e) { onStart(e.clientX); });
+        document.addEventListener('mousemove', function(e) { if (isDragging) e.preventDefault(); });
+        document.addEventListener('mouseup', function(e) { onEnd(e.clientX); });
+
+        wrapper.addEventListener('touchstart', function(e) { onStart(e.touches[0].clientX); }, { passive: true });
+        wrapper.addEventListener('touchend', function(e) { onEnd(e.changedTouches[0].clientX); }, { passive: true });
+
+        // Keyboard
+        wrapper.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') { prev(); stopAuto(); startAuto(); }
+            if (e.key === 'ArrowRight') { next(); stopAuto(); startAuto(); }
+        });
+
+        // Pause on hover
+        wrapper.addEventListener('mouseenter', stopAuto);
+        wrapper.addEventListener('mouseleave', startAuto);
+
+        // Init
+        goTo(current);
+        startAuto();
+    })();
+    </script>
+
+</body>
+</html>
