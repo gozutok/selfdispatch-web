@@ -1,0 +1,18 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["4496Y8BKC4.com.gozutok.selfdispatch"],
+        "components": [
+          { "/": "/auth/confirmed", "comment": "Email confirmation link" },
+          { "/": "/auth/confirmed/", "comment": "Email confirmation link" },
+          { "/": "/auth/reset", "comment": "Password reset link" },
+          { "/": "/auth/reset/", "comment": "Password reset link" }
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["4496Y8BKC4.com.gozutok.selfdispatch"]
+  }
+}
