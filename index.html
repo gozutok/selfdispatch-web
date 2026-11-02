@@ -222,6 +222,36 @@
             width: auto;
         }
 
+        .app-store-badge--soon {
+            position: relative;
+            cursor: default;
+        }
+
+        .app-store-badge--soon:hover {
+            opacity: 1;
+            transform: none;
+        }
+
+        .app-store-badge--soon img {
+            opacity: 0.5;
+            filter: grayscale(1);
+        }
+
+        .soon-tag {
+            position: absolute;
+            top: -11px;
+            right: -16px;
+            background: var(--sunset);
+            color: #000;
+            font: 700 11px/1 var(--font);
+            letter-spacing: 0.02em;
+            padding: 5px 9px;
+            border-radius: 999px;
+            transform: rotate(6deg);
+            box-shadow: 0 4px 14px rgba(251, 146, 60, 0.35);
+            white-space: nowrap;
+        }
+
         .hero-mockup {
             position: relative;
             width: 100%;
@@ -752,9 +782,10 @@
             <h1>Dispatch Briefings, <span class="accent">Reimagined</span></h1>
             <p class="hero-sub">Transform your Operational Flight Plans into interactive briefings with on-device AI for NOTAM classification, suitability-time analysis, and flight-critical tools. And, even live ATIS and expected clearance — plus a revolutionary approach to MEL visibility. No cloud. No data shared. Ever.</p>
             <div class="hero-actions">
-                <a href="#" class="app-store-badge" aria-label="Download Self Dispatch on the App Store">
-                    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" height="52" width="156" loading="eager">
-                </a>
+                <span class="app-store-badge app-store-badge--soon" role="img" aria-label="Self Dispatch is coming soon to the App Store">
+                    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="" height="52" width="156" loading="eager">
+                    <span class="soon-tag" aria-hidden="true">Coming soon!</span>
+                </span>
             </div>
             <div class="hero-mockup">
                 <div class="hero-mockup-inner">
@@ -886,15 +917,11 @@
                 </div>
                 <h2>Privacy by Design</h2>
             </div>
-            <p>Your operational data stays on your device. No cloud sync, no tracking, no analytics, no ads. Period.</p>
+            <p>Your operational data stays on your device. No cloud sync, no ads. Period.</p>
             <div class="privacy-badges">
                 <span class="privacy-badge">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
                     No cloud sync
-                </span>
-                <span class="privacy-badge">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                    No tracking
                 </span>
                 <span class="privacy-badge">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
@@ -914,9 +941,10 @@
         <div class="cta-content">
             <h2>Ready to streamline your briefing?</h2>
             <p>Available on iPhone and iPad. Supports dark mode.</p>
-            <a href="#" class="app-store-badge" aria-label="Download Self Dispatch on the App Store">
-                <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" height="52" width="156" loading="lazy">
-            </a>
+            <span class="app-store-badge app-store-badge--soon" role="img" aria-label="Self Dispatch is coming soon to the App Store">
+                <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="" height="52" width="156" loading="lazy">
+                <span class="soon-tag" aria-hidden="true">Coming soon!</span>
+            </span>
         </div>
     </section>
 
