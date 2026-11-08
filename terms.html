@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service — Self Dispatch</title>
+    <meta name="description" content="Terms of Service for Self Dispatch — Operational Flight Plan Briefing Assistant for Airline Pilots.">
+    <meta name="theme-color" content="#000000">
+    <link rel="canonical" href="https://selfdispatch.net/terms">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --space: #000000;
+            --upper-atmo: #0C1445;
+            --twilight: #1E3A5F;
+            --white-bright: #F8FAFC;
+            --sunset: #FB923C;
+            --sunset-deep: #EA580C;
+            --ice: #7DD3FC;
+            --white-90: rgba(248, 250, 252, 0.9);
+            --white-70: rgba(248, 250, 252, 0.7);
+            --white-50: rgba(248, 250, 252, 0.5);
+            --white-30: rgba(248, 250, 252, 0.3);
+            --white-10: rgba(248, 250, 252, 0.1);
+            --white-05: rgba(248, 250, 252, 0.05);
+            --green: #22C55E;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--space);
+            background-image: linear-gradient(
+                180deg,
+                var(--space) 0%,
+                #050A1A 10%,
+                var(--upper-atmo) 30%,
+                var(--twilight) 55%,
+                #2A4A6F 70%,
+                #3D2B1A 88%,
+                #1A0F05 100%
+            );
+            background-attachment: fixed;
+            color: var(--white-90);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- STARS --- */
+        .stars-field {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(1.2px 1.2px at 12% 8%, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1.4px 1.4px at 67% 5%, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 35% 12%, rgba(255,255,255,0.5), transparent),
+                radial-gradient(1.3px 1.3px at 82% 18%, rgba(255,255,255,0.65), transparent),
+                radial-gradient(1px 1px at 48% 3%, rgba(255,255,255,0.55), transparent),
+                radial-gradient(1.5px 1.5px at 91% 11%, rgba(255,255,255,0.75), transparent),
+                radial-gradient(1px 1px at 23% 22%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(1.1px 1.1px at 56% 16%, rgba(255,255,255,0.5), transparent),
+                radial-gradient(1px 1px at 5% 28%, rgba(255,255,255,0.35), transparent),
+                radial-gradient(1px 1px at 74% 25%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(0.8px 0.8px at 42% 31%, rgba(255,255,255,0.3), transparent),
+                radial-gradient(1px 1px at 18% 35%, rgba(255,255,255,0.25), transparent),
+                radial-gradient(0.8px 0.8px at 88% 33%, rgba(255,255,255,0.35), transparent),
+                radial-gradient(1px 1px at 61% 29%, rgba(255,255,255,0.3), transparent),
+                radial-gradient(0.8px 0.8px at 15% 44%, rgba(255,255,255,0.15), transparent),
+                radial-gradient(0.8px 0.8px at 52% 47%, rgba(255,255,255,0.12), transparent),
+                radial-gradient(0.7px 0.7px at 70% 42%, rgba(255,255,255,0.15), transparent);
+            -webkit-mask-image: linear-gradient(180deg, white 0%, white 45%, transparent 70%);
+            mask-image: linear-gradient(180deg, white 0%, white 45%, transparent 70%);
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.15; }
+            50% { opacity: 0.9; }
+        }
+
+        @keyframes twinkle-soft {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.6; }
+        }
+
+        .twinkle-star {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            background: white;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .twinkle-star--1 { top: 6%; left: 15%; width: 2.5px; height: 2.5px; animation: twinkle 4s ease-in-out infinite; }
+        .twinkle-star--2 { top: 11%; left: 72%; animation: twinkle-soft 5.5s ease-in-out infinite 1.2s; }
+        .twinkle-star--3 { top: 3%; left: 45%; width: 2.2px; height: 2.2px; animation: twinkle 6s ease-in-out infinite 2.8s; }
+        .twinkle-star--4 { top: 19%; left: 88%; animation: twinkle-soft 4.5s ease-in-out infinite 0.5s; }
+        .twinkle-star--5 { top: 25%; left: 30%; width: 1.8px; height: 1.8px; animation: twinkle 7s ease-in-out infinite 3.5s; }
+
+        /* --- HEADER --- */
+        .page-header {
+            position: relative;
+            z-index: 1;
+            padding: 48px 24px 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--ice);
+            text-decoration: none;
+            transition: color 200ms ease;
+            margin-bottom: 40px;
+        }
+
+        .back-link:hover {
+            color: var(--white-bright);
+        }
+
+        .back-link svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .page-header h1 {
+            font-size: clamp(30px, 5vw, 48px);
+            font-weight: 800;
+            color: var(--white-bright);
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .page-header .effective-date {
+            font-size: 15px;
+            color: var(--white-50);
+        }
+
+        /* --- CONTENT --- */
+        .privacy-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px 100px;
+        }
+
+        .privacy-content .intro {
+            font-size: 17px;
+            color: var(--white-70);
+            line-height: 1.75;
+            margin-bottom: 48px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid var(--white-10);
+        }
+
+        .privacy-content h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--white-bright);
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            margin-top: 48px;
+        }
+
+        .privacy-content h2:first-of-type {
+            margin-top: 0;
+        }
+
+        .privacy-content p {
+            font-size: 15px;
+            color: var(--white-70);
+            line-height: 1.75;
+            margin-bottom: 16px;
+        }
+
+        .privacy-content ul {
+            list-style: none;
+            margin-bottom: 20px;
+            padding-left: 0;
+        }
+
+        .privacy-content ul li {
+            position: relative;
+            padding-left: 24px;
+            font-size: 15px;
+            color: var(--white-70);
+            line-height: 1.75;
+            margin-bottom: 8px;
+        }
+
+        .privacy-content ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 11px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--ice);
+            opacity: 0.6;
+        }
+
+        .privacy-content strong {
+            color: var(--white-90);
+            font-weight: 600;
+        }
+
+        .privacy-content a {
+            color: var(--ice);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(125, 211, 252, 0.3);
+            transition: border-color 200ms ease, color 200ms ease;
+        }
+
+        .privacy-content a:hover {
+            color: var(--white-bright);
+            border-color: var(--white-bright);
+        }
+
+        .privacy-content a:focus-visible {
+            outline: 2px solid var(--ice);
+            outline-offset: 2px;
+        }
+
+        .network-item {
+            background: var(--white-05);
+            border: 1px solid var(--white-10);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 12px;
+        }
+
+        .network-item strong {
+            display: block;
+            color: var(--sunset);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .network-item p {
+            margin-bottom: 0;
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid var(--white-10);
+            padding: 32px 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            font-size: 14px;
+            color: var(--white-50);
+            text-decoration: none;
+            transition: color 200ms ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--ice);
+        }
+
+        .footer-copy {
+            font-size: 13px;
+            color: var(--white-50);
+        }
+
+        @media (min-width: 768px) {
+            .page-header {
+                padding: 64px 40px 48px;
+            }
+            .privacy-content {
+                padding: 0 40px 120px;
+            }
+            .footer {
+                padding: 32px 40px;
+            }
+            .footer-inner {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid var(--ice);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STARS -->
+    <div class="stars-field" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--1" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--2" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--3" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--4" aria-hidden="true"></div>
+    <div class="twinkle-star twinkle-star--5" aria-hidden="true"></div>
+
+    <!-- HEADER -->
+    <header class="page-header">
+        <a href="/index.html" class="back-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+            Back to Self Dispatch
+        </a>
+        <h1>Terms of Service</h1>
+        <p class="effective-date">Effective date: November 8, 2026</p>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="privacy-content">
+        <p class="intro">Please read these Terms of Service carefully before using Self Dispatch. By downloading, installing, or using the App, you agree to be bound by these Terms. If you do not agree to these Terms, do not use the App.</p>
+        <h2>1. Description of Service</h2>
+        <p>The App is a personal reference and briefing tool that processes operational flight plan PDF documents into a structured, readable format. The App is designed to assist professional pilots with flight preparation by organizing information already contained in their official documents.</p>
+        <h2>2. Important Aviation Disclaimer</h2>
+        <p><strong>THE APP IS NOT A CERTIFIED AVIATION TOOL.</strong></p>
+        <p>The App is not certified, approved, endorsed, or verified by any civil aviation authority, airline operator, aircraft manufacturer, or regulatory body. The App is not an Electronic Flight Bag (EFB), nor is it a replacement for any certified operational tool or system.</p>
+        <p><strong>THE APP IS FOR INFORMATIONAL AND REFERENCE PURPOSES ONLY.</strong></p>
+        <p>The information displayed by the App is derived from automated processing of documents you provide. It is intended solely as a supplementary reference to assist with your briefing preparation.</p>
+        <p><strong>THE APP DOES NOT REPLACE OFFICIAL DOCUMENTS.</strong></p>
+        <p>You must always refer to and verify information against the original official operational flight plan, official aviation publications, aeronautical charts, manufacturer documentation, airline procedures, and any other authoritative source before making any operational decision.</p>
+        <p><strong>THE APP MAY CONTAIN ERRORS.</strong></p>
+        <p>The App uses automated text extraction and pattern matching to process documents. This process is inherently imperfect and may produce:</p>
+        <ul>
+            <li>Incorrect, incomplete, or misinterpreted data</li>
+            <li>Missing or omitted information</li>
+            <li>Formatting errors that alter the meaning of the original content</li>
+            <li>Failures caused by changes in document format or structure</li>
+        </ul>
+        <p>You are solely responsible for verifying all information presented by the App against original source documents.</p>
+        <h2>3. User Responsibilities</h2>
+        <p>By using the App, you acknowledge and agree that:</p>
+        <ul>
+            <li>You are a qualified aviation professional who understands the limitations of automated document processing.</li>
+            <li>You will not rely on the App as your sole or primary source of operational information.</li>
+            <li>You will always cross-reference information from the App with your original official documents.</li>
+            <li>You are solely responsible for all operational decisions, regardless of any information presented by the App.</li>
+            <li>The App does not replace your professional judgment, training, standard operating procedures, or regulatory obligations.</li>
+            <li>You will comply with all applicable laws, regulations, and operational procedures when using the App.</li>
+        </ul>
+        <h2>4. No Professional Advice</h2>
+        <p>Nothing in the App constitutes professional, operational, legal, or regulatory advice. The App is a convenience tool that reorganizes information from documents you provide. Any assessments, flags, or indicators shown by the App are automated interpretations and may be incorrect.</p>
+        <h2>5. Third-Party Data</h2>
+        <p>The App may display weather information, ATIS reports, airport clearance data, or other information obtained from external public sources. We do not control, verify, or guarantee the accuracy, completeness, or timeliness of any data from external sources. Such data is provided for convenience only and must be verified against official sources.</p>
+        <h2>6. User Content (Airport Notes)</h2>
+        <p>Airport notes are written by users of the App. They are information only and are not checked for accuracy: always follow official documents, NOTAMs and ATC.</p>
+        <p>When you share a note, you allow us to store it, show it to other users of the App and keep it available, without your name, after your account is deleted. You are responsible for what you write, and it must follow the <a href="/community-rules.html">Community Rules</a>.</p>
+        <p>We do not tolerate offensive or abusive content. We may decline, hide, correct or remove any note, and may close an account or device that breaks these Terms or the Community Rules.</p>
+        <h2>7. License</h2>
+        <p>Subject to these Terms, we grant you a limited, non-exclusive, non-transferable, revocable license to use the App on devices you own or control, for your personal and professional reference purposes.</p>
+        <p>You may not:</p>
+        <ul>
+            <li>Copy, modify, distribute, sell, or lease any part of the App</li>
+            <li>Reverse engineer, decompile, or disassemble the App</li>
+            <li>Use the App for any unlawful purpose</li>
+            <li>Remove any copyright or proprietary notices from the App</li>
+        </ul>
+        <h2>8. Intellectual Property</h2>
+        <p>The App, including its design, code, graphics, and content (excluding your imported documents), is owned by the developer and protected by applicable intellectual property laws. Your imported documents remain your property.</p>
+        <h2>9. Disclaimer of Warranties</h2>
+        <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE APP AND ALL CONTENT, INFORMATION, AND DATA PROVIDED THROUGH THE APP ARE PROVIDED ON AN &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; BASIS WITHOUT WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, OR STATUTORY.</p>
+        <p>WE EXPRESSLY DISCLAIM ALL WARRANTIES, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, ACCURACY, RELIABILITY, COMPLETENESS, AND NON-INFRINGEMENT.</p>
+        <p>WE DO NOT WARRANT THAT:</p>
+        <ul>
+            <li>THE APP WILL BE UNINTERRUPTED, TIMELY, SECURE, OR ERROR-FREE</li>
+            <li>THE RESULTS OBTAINED FROM THE USE OF THE APP WILL BE ACCURATE, RELIABLE, OR COMPLETE</li>
+            <li>ANY INFORMATION EXTRACTED, PARSED, OR DISPLAYED BY THE APP WILL ACCURATELY REFLECT THE CONTENT OF YOUR SOURCE DOCUMENTS</li>
+            <li>THE APP WILL BE COMPATIBLE WITH ALL DOCUMENT FORMATS OR VERSIONS</li>
+            <li>DEFECTS IN THE APP WILL BE CORRECTED</li>
+        </ul>
+        <h2>10. Limitation of Liability</h2>
+        <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL THE DEVELOPER BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS, DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, ARISING OUT OF OR IN CONNECTION WITH:</p>
+        <ul>
+            <li>YOUR USE OF OR INABILITY TO USE THE APP</li>
+            <li>ANY ERRORS, INACCURACIES, OR OMISSIONS IN THE INFORMATION DISPLAYED BY THE APP</li>
+            <li>ANY OPERATIONAL DECISION MADE BASED ON INFORMATION FROM THE APP</li>
+            <li>ANY UNAUTHORIZED ACCESS TO OR USE OF YOUR DEVICE OR DATA</li>
+            <li>ANY INTERRUPTION OR CESSATION OF THE APP&#x27;S FUNCTIONALITY</li>
+        </ul>
+        <p>WHETHER BASED ON WARRANTY, CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY, OR ANY OTHER LEGAL THEORY, AND WHETHER OR NOT WE HAVE BEEN INFORMED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+        <p>IN NO EVENT SHALL OUR TOTAL LIABILITY TO YOU EXCEED THE AMOUNT YOU PAID FOR THE APP IN THE TWELVE (12) MONTHS PRECEDING THE CLAIM.</p>
+        <p>SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OR LIMITATION OF LIABILITY FOR CONSEQUENTIAL OR INCIDENTAL DAMAGES, SO THE ABOVE LIMITATIONS MAY NOT APPLY TO YOU. IN SUCH JURISDICTIONS, OUR LIABILITY IS LIMITED TO THE GREATEST EXTENT PERMITTED BY LAW.</p>
+        <h2>11. Indemnification</h2>
+        <p>You agree to indemnify, defend, and hold harmless the developer from and against any claims, liabilities, damages, losses, and expenses (including reasonable legal fees) arising out of or in any way connected with your use of the App or your violation of these Terms.</p>
+        <h2>12. Modifications</h2>
+        <p>We reserve the right to modify, suspend, or discontinue the App at any time without notice. We may also update these Terms from time to time. When we make changes, we will revise the &quot;Effective date&quot; at the top of this page. Your continued use of the App after any changes constitutes acceptance of the updated Terms.</p>
+        <h2>13. Termination</h2>
+        <p>We may terminate or suspend your access to the App at any time, for any reason, without prior notice. Upon termination, your license to use the App is immediately revoked.</p>
+        <h2>14. Governing Law</h2>
+        <p>These Terms shall be governed by and construed in accordance with the laws of the Republic of Turkiye, without regard to its conflict of law provisions.</p>
+        <h2>15. Severability</h2>
+        <p>If any provision of these Terms is found to be unenforceable or invalid, that provision will be limited or eliminated to the minimum extent necessary so that the remaining provisions remain in full force and effect.</p>
+        <h2>16. Entire Agreement</h2>
+        <p>These Terms, together with our <a href="/privacy.html">Privacy Policy</a> and the <a href="/community-rules.html">Community Rules</a>, constitute the entire agreement between you and the developer regarding your use of the App.</p>
+
+        <h2>Contact Us</h2>
+        <p><a href="mailto:hello@selfdispatch.net">hello@selfdispatch.net</a></p>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <span class="footer-copy">&copy; 2026 Self Dispatch</span>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="mailto:hello@selfdispatch.net">Support</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
