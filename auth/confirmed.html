@@ -82,7 +82,9 @@ function show() {
   document.getElementById("empty").hidden = true;
   document.getElementById("code").hidden = false;
   document.getElementById("value").textContent = code;
-  document.getElementById("open").href = "selfdispatch://auth-callback#token_hash=" + encodeURIComponent(hash);
+  // The app scheme can be claimed by another app: it carries only the code,
+  // useless without the address that only Self Dispatch holds — never the token.
+  document.getElementById("open").href = "selfdispatch://auth-callback#otp=" + encodeURIComponent(code);
 }
 show();
 window.addEventListener("hashchange", show);
